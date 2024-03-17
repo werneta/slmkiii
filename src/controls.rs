@@ -25,9 +25,9 @@ pub enum Assignment1Type {
 #[derive(Debug)]
 pub struct Assignment1 {
     ctype: Assignment1Type,
-    channel: u8, // 0 (default), 1-16
-    start: u8,   // 0-127
-    end: u8,     // 0-127
+    channel: u8,    // 0 (default), 1-16
+    start_down: u8, // 0-127
+    end_up: u8,     // 0-127
 }
 
 /******************************************************************************/
