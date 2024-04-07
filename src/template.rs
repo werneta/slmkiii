@@ -4,16 +4,16 @@ use crate::controls::{defaults, Button, Fader, Footswitch, Key, Pad, Pedal, Rota
 
 #[derive(Debug)]
 pub struct Template {
-    name: String,
-    rotary_controls: [Rotary; 16],
-    faders: [Fader; 8],
-    buttons: [Button; 16],
-    pads: [Pad; 16],
-    wheel: Wheel,
-    sustain: Pedal,
-    footswitch: Footswitch,
-    expression: Pedal,
-    keys: Key,
+    pub name: String,
+    pub rotary_controls: [Rotary; 16],
+    pub faders: [Fader; 8],
+    pub buttons: [Button; 16],
+    pub pads: [Pad; 16],
+    pub wheel: Wheel,
+    pub sustain: Pedal,
+    pub footswitch: Footswitch,
+    pub expression: Pedal,
+    pub keys: Key,
 }
 
 /******************************************************************************/
