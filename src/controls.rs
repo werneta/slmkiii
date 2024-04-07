@@ -2,6 +2,10 @@ pub mod defaults;
 
 /******************************************************************************/
 
+use std::iter::repeat;
+
+/******************************************************************************/
+
 #[derive(Debug)]
 pub enum MidiBits {
     SEVEN,
@@ -210,4 +214,19 @@ pub struct Wheel {
     name: String,
     enabled: bool,
     assignment: Assignment2,
+}
+
+/******************************************************************************/
+
+pub fn serialize(rotary: &Rotary) -> Vec<u8> {
+    let mut rv: Vec<u8> = vec![0];
+    let mut name = rotary.name.clone();
+
+    // There's that goofball 0 byte in here somewhere
+    name.extend(repeat('\0').take(9 - name.len()));
+
+    rv.push(if rotary.enabled { 1 } else { 0 });
+    rv.extend(name.as_bytes());
+
+    return rv;
 }
