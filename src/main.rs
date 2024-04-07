@@ -1,8 +1,8 @@
-use slmkiii::controls::defaults;
+use slmkiii::{controls, template};
 
 fn main() {
-    for n in 0..16 {
-        let rot = defaults::rotary(n);
-        println!("{:#?}", rot);
-    }
+    let tmpl = template::default();
+
+    println!("{:#?}", tmpl);
+    println!("{:#?}", controls::serialize(&tmpl.rotary_controls[0]));
 }
