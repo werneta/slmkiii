@@ -1,4 +1,6 @@
 use crate::controls::{defaults, Button, Fader, Footswitch, Key, Pad, Pedal, Rotary, Wheel};
+use crate::midi::sysex;
+use std::iter::repeat;
 
 /******************************************************************************/
 
@@ -38,4 +40,19 @@ pub fn default() -> Template {
         expression: defaults::pedal(false),
         keys: defaults::key(),
     };
+}
+
+/******************************************************************************/
+
+pub fn serialize(template: &Template) -> Vec<u8> {
+    let mut rv: Vec<u8> = vec![];
+    let novation_sysex_id = [0x00, 0x20, 0x29];
+    let ser_len = 4214; // Bytes
+
+    let mut msg: Vec<u8> = vec![];
+    msg.extend(repeat(0).take(4214 - 2 - 3));
+    let msg1 = sysex(novation_sysex_id, msg);
+
+    rv.extend(msg1);
+    return rv;
 }
