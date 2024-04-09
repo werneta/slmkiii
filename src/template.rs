@@ -51,22 +51,22 @@ pub fn serialize(template: &Template) -> Vec<u8> {
     // Bogus filler logic, capturing the 16 messages
     let mut msg: Vec<u8> = vec![];
     msg.extend(repeat(0).take(4214 - 2 - 3));
-    let msg0 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg1 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg2 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg3 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg4 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg5 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg6 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg7 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg8 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg9 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg10 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg11 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg12 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg13 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg14 = sysex(NOVATION_SYSEX_ID, msg);
-    let msg15 = sysex(NOVATION_SYSEX_ID, msg);
+    let msg0 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg1 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg2 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg3 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg4 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg5 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg6 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg7 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg8 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg9 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg10 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg11 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg12 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg13 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg14 = sysex(NOVATION_SYSEX_ID, &msg);
+    let msg15 = sysex(NOVATION_SYSEX_ID, &msg);
 
     rv.extend(msg0);
     rv.extend(msg1);
