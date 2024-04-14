@@ -83,11 +83,8 @@ impl SysEx {
 
 impl fmt::Display for SysEx {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "{:?}", self.mfgr).unwrap();
-        writeln!(
-            f,
-            "{}",
-            self.data.iter().map(|&val| format!("{:X}", val)).collect()
-        )
+        let bytes = String::from_iter(self.data.iter().map(|v| format!("{:02X}", v)));
+        writeln!(f, "{:?}", self.mfgr);
+        writeln!(f, "{}", bytes)
     }
 }
