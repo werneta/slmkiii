@@ -1,5 +1,6 @@
 use clap::Parser;
-// use slmkiii::midi::{EOX, SOX};
+use slmkiii::midi::split_sysex_msgs;
+use std::fs::read;
 
 /// MIDI SysEx decoder
 #[derive(Parser, Debug)]
@@ -13,5 +14,10 @@ struct Cli {
 fn main() {
     let args = Cli::parse();
 
-    println!("{:?}", args.fname);
+    let data = read(&args.fname).unwrap();
+    let msgs = split_sysex_msgs(&data);
+
+    for (n, msg) in msgs.iter().enumerate() {
+        println!("Message {}: {}", n, msg);
+    }
 }

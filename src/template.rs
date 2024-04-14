@@ -1,5 +1,5 @@
 use crate::controls::{defaults, Button, Fader, Footswitch, Key, Pad, Pedal, Rotary, Wheel};
-use crate::midi::{sysex, NOVATION_SYSEX_ID};
+use crate::midi::SysEx;
 use std::iter::repeat;
 
 /******************************************************************************/
@@ -48,6 +48,7 @@ pub fn serialize(template: &Template) -> Vec<u8> {
     let mut rv: Vec<u8> = vec![];
     let ser_len = 4214; // Bytes
 
+    /*
     // Bogus filler logic, capturing the 16 messages
     let mut msg: Vec<u8> = vec![];
     msg.extend(repeat(0).take(4214 - 2 - 3));
@@ -84,6 +85,7 @@ pub fn serialize(template: &Template) -> Vec<u8> {
     rv.extend(msg13);
     rv.extend(msg14);
     rv.extend(msg15);
+    */
 
     return rv;
 }
