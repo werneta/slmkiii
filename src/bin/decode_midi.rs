@@ -18,6 +18,6 @@ fn main() {
     let msgs = split_sysex_msgs(&data);
 
     for (n, msg) in msgs.iter().enumerate() {
-        println!("Message {}: {}", n, msg);
+        println!("Message {}:\n{}", n, msg);
     }
 }
