@@ -207,7 +207,7 @@ impl fmt::Display for SysEx {
         writeln!(f, "Pkt:   {:?}", self.pkt_id);
         writeln!(f, "Magic: {:?}", self.magic);
         writeln!(f, "Data:  {}", hex);
-        writeln!(f, "       {}", ascii);
+        writeln!(f, "Data:  {}", ascii);
 
         return Ok(());
     }
