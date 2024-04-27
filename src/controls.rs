@@ -133,13 +133,6 @@ impl TryFrom<u8> for MidiCh {
  * Module function definitions
  *****************************************************************************/
 
-fn append(mut vec: Vec<u8>, val: u16) {
-    vec.push((val >> 8).try_into().unwrap());
-    vec.push((val & 0xFF).try_into().unwrap());
-}
-
-/******************************************************************************/
-
 fn zpad(mut vec: Vec<u8>, len: usize) {
     if len > vec.len() {
         vec.extend(zeros(len - vec.len()))

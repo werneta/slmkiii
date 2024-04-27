@@ -1,4 +1,4 @@
-use super::{append, zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
+use super::{zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
 
 /******************************************************************************/
 
@@ -32,8 +32,8 @@ impl Into<Vec<u8>> for Key {
         rv.push(self.ctype.into());
         rv.push(0);
         rv.push(self.channel.into());
-        append(rv, self.start);
-        append(rv, self.end);
+        rv.extend(self.start.to_be_bytes());
+        rv.extend(self.end.to_be_bytes());
         rv.push(self.midi_bits.into());
         rv.push(self.cc_nrpn1_note);
         rv.push(self.nrpn2);
