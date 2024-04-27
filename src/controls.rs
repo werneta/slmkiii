@@ -8,12 +8,19 @@ pub mod wheel;
 
 use std::iter::repeat;
 
-/******************************************************************************/
+/******************************************************************************
+ * API type definitions
+ ******************************************************************************/
 
-#[derive(Debug)]
-pub enum MidiCh {
-    DEFAULT,
-    CHANNEL { ch: u8 },
+#[derive(Debug, PartialEq)]
+pub enum CmdType {
+    Cc,
+    Nrpn,
+    Note,
+    ProgChange,
+    SongPosn,
+    ChannelPressure,
+    PolyAftertouch,
 }
 
 /******************************************************************************/
@@ -27,63 +34,72 @@ pub enum MidiBits {
 
 /******************************************************************************/
 
-#[derive(Debug, PartialEq)]
-pub enum AssignmentType {
-    Cc,
-    Nrpn,
-    Note,
-    ProgChange,
-    SongPosn,
-    ChannelPressure,
-    PolyAftertouch,
-}
-
-/******************************************************************************/
-
 #[derive(Debug)]
-pub struct Assignment1 {
-    ctype: AssignmentType,
-    channel: u8,    // 0 (default), 1-16
-    start_down: u8, // 0-127
-    end_up: u8,     // 0-127
+pub enum MidiCh {
+    DEFAULT,
+    CHANNEL { ch: u8 },
 }
 
-/******************************************************************************/
+/******************************************************************************
+ * Trait implementations
+ *****************************************************************************/
 
-#[derive(Debug)]
-pub struct Assignment2 {
-    ctype: AssignmentType,
-    channel: u8,
-    start: u16,
-    end: u16,
-}
-
-/******************************************************************************/
-
-impl From<AssignmentType> for u8 {
-    fn from(atype: AssignmentType) -> u8 {
-        return match atype {
-            AssignmentType::Cc => 0,
-            AssignmentType::Nrpn => 1,
-            AssignmentType::Note => 2,
-            AssignmentType::ProgChange => 3,
-            AssignmentType::SongPosn => 4,
-            AssignmentType::ChannelPressure => 5,
-            AssignmentType::PolyAftertouch => 6,
+impl Into<u8> for CmdType {
+    fn into(self: CmdType) -> u8 {
+        return match self {
+            CmdType::Cc => CMD_TYPE_CC,
+            CmdType::Nrpn => CMD_TYPE_NRPN,
+            CmdType::Note => CMD_TYPE_NOTE,
+            CmdType::ProgChange => CMD_TYPE_PROGRAM_CHANGE,
+            CmdType::SongPosn => CMD_TYPE_SONG_POSITION,
+            CmdType::ChannelPressure => CMD_TYPE_CHANNEL_PRESSURE,
+            CmdType::PolyAftertouch => CMD_TYPE_POLYPHONIC_AFTERTOUCH,
         };
     }
 }
 
-/******************************************************************************
- * Trait definitions
- ******************************************************************************/
+/*****************************************************************************/
+
+impl TryFrom<u8> for CmdType {
+    type Error = &'static str;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        return match value {
+            CMD_TYPE_CC => Ok(CmdType::Cc),
+            CMD_TYPE_NRPN => Ok(CmdType::Nrpn),
+            CMD_TYPE_NOTE => Ok(CmdType::Note),
+            CMD_TYPE_PROGRAM_CHANGE => Ok(CmdType::ProgChange),
+            CMD_TYPE_SONG_POSITION => Ok(CmdType::SongPosn),
+            CMD_TYPE_CHANNEL_PRESSURE => Ok(CmdType::ChannelPressure),
+            CMD_TYPE_POLYPHONIC_AFTERTOUCH => Ok(CmdType::PolyAftertouch),
+            _ => Err("Invalid CmdType"),
+        };
+    }
+}
+
+/*****************************************************************************/
 
 impl Into<u8> for MidiBits {
     fn into(self: MidiBits) -> u8 {
         return match self {
-            MidiBits::SEVEN => SEVEN_BIT_MIDI_VAL,
-            MidiBits::EIGHT => EIGHT_BIT_MIDI_VAL,
-            MidiBits::FOURTEEN => FOURTEEN_BIT_MIDI_VAL,
+            MidiBits::SEVEN => MIDI_BITS_SEVEN,
+            MidiBits::EIGHT => MIDI_BITS_EIGHT,
+            MidiBits::FOURTEEN => MIDI_BITS_FOURTEEN,
+        };
+    }
+}
+
+/******************************************************************************/
+
+impl TryFrom<u8> for MidiBits {
+    type Error = &'static str;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        return match value {
+            MIDI_BITS_SEVEN => Ok(MidiBits::SEVEN),
+            MIDI_BITS_EIGHT => Ok(MidiBits::EIGHT),
+            MIDI_BITS_FOURTEEN => Ok(MidiBits::FOURTEEN),
+            _ => Err("MIDI Bits only supports values 0, 1, and 2"),
         };
     }
 }
@@ -93,7 +109,7 @@ impl Into<u8> for MidiBits {
 impl Into<u8> for MidiCh {
     fn into(self: MidiCh) -> u8 {
         return match self {
-            MidiCh::DEFAULT => DEFAULT_CH,
+            MidiCh::DEFAULT => MIDI_CH_DEFAULT,
             MidiCh::CHANNEL { ch } => ch - 1,
         };
     }
@@ -106,7 +122,7 @@ impl TryFrom<u8> for MidiCh {
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
         return match value {
-            DEFAULT_CH => Ok(MidiCh::DEFAULT),
+            MIDI_CH_DEFAULT => Ok(MidiCh::DEFAULT),
             0..=15 => Ok(MidiCh::CHANNEL { ch: value + 1 }),
             _ => Err("MIDI Supports channels 1-16 only"),
         };
@@ -117,7 +133,7 @@ impl TryFrom<u8> for MidiCh {
  * Module function definitions
  *****************************************************************************/
 
-fn append_u16(mut vec: Vec<u8>, val: u16) {
+fn append(mut vec: Vec<u8>, val: u16) {
     vec.push((val >> 8).try_into().unwrap());
     vec.push((val & 0xFF).try_into().unwrap());
 }
@@ -140,10 +156,18 @@ fn zeros(num: usize) -> Vec<u8> {
  * Module constant definitions
  *****************************************************************************/
 
-const DEFAULT_CH: u8 = 127;
+const MIDI_CH_DEFAULT: u8 = 127;
 const STRUCT_LEN: usize = 44;
 const NAME_LEN: usize = 9;
 
-const SEVEN_BIT_MIDI_VAL: u8 = 0;
-const EIGHT_BIT_MIDI_VAL: u8 = 1;
-const FOURTEEN_BIT_MIDI_VAL: u8 = 2;
+const CMD_TYPE_CC: u8 = 0;
+const CMD_TYPE_NRPN: u8 = 1;
+const CMD_TYPE_NOTE: u8 = 2;
+const CMD_TYPE_PROGRAM_CHANGE: u8 = 3;
+const CMD_TYPE_SONG_POSITION: u8 = 4;
+const CMD_TYPE_CHANNEL_PRESSURE: u8 = 5;
+const CMD_TYPE_POLYPHONIC_AFTERTOUCH: u8 = 6;
+
+const MIDI_BITS_SEVEN: u8 = 0;
+const MIDI_BITS_EIGHT: u8 = 1;
+const MIDI_BITS_FOURTEEN: u8 = 2;
