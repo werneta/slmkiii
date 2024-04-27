@@ -1,5 +1,7 @@
-pub mod defaults;
-pub mod keys;
+pub mod default;
+pub mod key;
+pub mod pedal;
+pub mod rotary;
 pub mod wheel;
 
 /******************************************************************************/
