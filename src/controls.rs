@@ -1,5 +1,6 @@
 pub mod button;
 //pub mod default;
+pub mod fader;
 pub mod key;
 pub mod pad;
 pub mod pedal;
