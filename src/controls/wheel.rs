@@ -28,7 +28,7 @@ impl Into<Vec<u8>> for Wheel {
 
         assert_ne!(self.ctype, CmdType::Note);
         assert_ne!(self.ctype, CmdType::SongPosn);
-        assert!(self.name.len() <= 9);
+        assert!(self.name.len() <= NAME_LEN);
 
         rv.push(self.enabled.into());
         rv.extend(name);

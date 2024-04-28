@@ -22,13 +22,13 @@ pub struct Key {
  ******************************************************************************/
 
 impl Into<Vec<u8>> for Key {
-    fn into(self: Key) -> Vec<u8> {
+    fn into(self) -> Vec<u8> {
         let mut rv: Vec<u8> = Default::default();
         let name = self.name.as_bytes();
 
         assert_ne!(self.ctype, CmdType::Note);
         assert_ne!(self.ctype, CmdType::SongPosn);
-        assert!(name.len() <= 9);
+        assert!(name.len() <= NAME_LEN);
 
         rv.push(self.enabled.into());
         rv.extend(name);

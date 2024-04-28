@@ -40,7 +40,7 @@ impl Into<Vec<u8>> for Pedal {
 
         assert_ne!(self.ctype, CmdType::Note);
         assert_ne!(self.ctype, CmdType::SongPosn);
-        assert!(name.len() <= 9);
+        assert!(name.len() <= NAME_LEN);
 
         rv.push(self.enabled.into());
         rv.extend(name);
