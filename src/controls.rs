@@ -88,7 +88,7 @@ impl TryFrom<u8> for BehaviorType {
 /*****************************************************************************/
 
 impl Into<u8> for CmdType {
-    fn into(self: CmdType) -> u8 {
+    fn into(self) -> u8 {
         return match self {
             CmdType::Cc => CMD_TYPE_CC,
             CmdType::Nrpn => CMD_TYPE_NRPN,
@@ -123,7 +123,7 @@ impl TryFrom<u8> for CmdType {
 /*****************************************************************************/
 
 impl Into<u8> for MidiBits {
-    fn into(self: MidiBits) -> u8 {
+    fn into(self) -> u8 {
         return match self {
             MidiBits::SEVEN => MIDI_BITS_SEVEN,
             MidiBits::EIGHT => MIDI_BITS_EIGHT,
@@ -150,7 +150,7 @@ impl TryFrom<u8> for MidiBits {
 /******************************************************************************/
 
 impl Into<u8> for MidiCh {
-    fn into(self: MidiCh) -> u8 {
+    fn into(self) -> u8 {
         return match self {
             MidiCh::DEFAULT => MIDI_CH_DEFAULT,
             MidiCh::CHANNEL { ch } => ch - 1,
