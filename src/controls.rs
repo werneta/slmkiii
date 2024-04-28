@@ -2,6 +2,7 @@ pub mod default;
 pub mod key;
 pub mod pedal;
 pub mod rotary;
+pub mod slider;
 pub mod wheel;
 
 /******************************************************************************/
