@@ -26,7 +26,7 @@ impl Into<Vec<u8>> for Wheel {
 
         rv.push(self.enabled as u8);
         rv.extend(name);
-        zpad(rv, NAME_LEN + 1);
+        zpad(&mut rv, NAME_LEN + 1);
         rv.push(self.ctype.into());
         rv.push(0);
         rv.push(self.channel.into());
@@ -35,7 +35,7 @@ impl Into<Vec<u8>> for Wheel {
         rv.push(self.midi_bits.into());
         rv.push(self.cc_nrpn1_note);
         rv.push(self.nrpn2);
-        zpad(rv, STRUCT_LEN);
+        zpad(&mut rv, STRUCT_LEN);
 
         return rv;
     }

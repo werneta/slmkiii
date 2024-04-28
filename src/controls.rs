@@ -134,7 +134,7 @@ impl TryFrom<u8> for MidiCh {
  * Module function definitions
  *****************************************************************************/
 
-fn zpad(mut vec: Vec<u8>, len: usize) {
+fn zpad(vec: &mut Vec<u8>, len: usize) {
     if len > vec.len() {
         vec.extend(zeros(len - vec.len()))
     }
