@@ -17,6 +17,16 @@ use std::iter::repeat;
  ******************************************************************************/
 
 #[derive(Debug, PartialEq)]
+pub enum BehaviorType {
+    Momentary,
+    Toggle,
+    IncDec,
+    Trigger,
+}
+
+/******************************************************************************/
+
+#[derive(Debug, PartialEq)]
 pub enum CmdType {
     Cc,
     Nrpn,
@@ -47,6 +57,35 @@ pub enum MidiCh {
 /******************************************************************************
  * Trait implementations
  *****************************************************************************/
+
+impl Into<u8> for BehaviorType {
+    fn into(self) -> u8 {
+        return match self {
+            BehaviorType::Momentary => BEH_TYPE_MOMENTARY,
+            BehaviorType::Toggle => BEH_TYPE_TOGGLE,
+            BehaviorType::IncDec => BEH_TYPE_INCDEC,
+            BehaviorType::Trigger => BEH_TYPE_TRIGGER,
+        };
+    }
+}
+
+/*****************************************************************************/
+
+impl TryFrom<u8> for BehaviorType {
+    type Error = &'static str;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        return match value {
+            BEH_TYPE_MOMENTARY => Ok(BehaviorType::Momentary),
+            BEH_TYPE_TOGGLE => Ok(BehaviorType::Toggle),
+            BEH_TYPE_INCDEC => Ok(BehaviorType::IncDec),
+            BEH_TYPE_TRIGGER => Ok(BehaviorType::Trigger),
+            _ => Err("Invalid behavior type"),
+        };
+    }
+}
+
+/*****************************************************************************/
 
 impl Into<u8> for CmdType {
     fn into(self: CmdType) -> u8 {
@@ -165,6 +204,11 @@ fn zeros(num: usize) -> Vec<u8> {
 const MIDI_CH_DEFAULT: u8 = 127;
 const STRUCT_LEN: usize = 44;
 const NAME_LEN: usize = 9;
+
+const BEH_TYPE_MOMENTARY: u8 = 0;
+const BEH_TYPE_TOGGLE: u8 = 1;
+const BEH_TYPE_INCDEC: u8 = 2;
+const BEH_TYPE_TRIGGER: u8 = 3;
 
 const CMD_TYPE_CC: u8 = 0;
 const CMD_TYPE_NRPN: u8 = 1;
