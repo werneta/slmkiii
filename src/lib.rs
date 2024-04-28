@@ -2,4 +2,4 @@
 
 pub mod controls;
 pub mod midi;
-pub mod template;
+// pub mod template;
