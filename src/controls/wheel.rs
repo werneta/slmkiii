@@ -1,5 +1,9 @@
 use super::{zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
 
+/******************************************************************************
+ * API type definitions
+ ******************************************************************************/
+
 #[derive(Debug)]
 pub struct Wheel {
     name: String,
@@ -13,18 +17,20 @@ pub struct Wheel {
     end: u16,
 }
 
-/******************************************************************************/
+/******************************************************************************
+ * Trait implementations
+ ******************************************************************************/
 
 impl Into<Vec<u8>> for Wheel {
     fn into(self: Wheel) -> Vec<u8> {
+        let mut rv: Vec<u8> = Default::default();
+        let name = self.name.as_bytes();
+
         assert_ne!(self.ctype, CmdType::Note);
         assert_ne!(self.ctype, CmdType::SongPosn);
         assert!(self.name.len() <= 9);
 
-        let mut rv: Vec<u8> = Default::default();
-        let name = self.name.as_bytes();
-
-        rv.push(self.enabled as u8);
+        rv.push(self.enabled.into());
         rv.extend(name);
         zpad(&mut rv, NAME_LEN + 1);
         rv.push(self.ctype.into());
