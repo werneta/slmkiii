@@ -1,4 +1,4 @@
-use super::{zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
+use super::{u14_to_bytes, zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
 
 /******************************************************************************
  * API type definitions
@@ -36,8 +36,8 @@ impl Into<Vec<u8>> for Key {
         rv.push(self.ctype.into());
         rv.push(0);
         rv.push(self.channel.into());
-        rv.extend(self.start.to_be_bytes());
-        rv.extend(self.end.to_be_bytes());
+        rv.extend(u14_to_bytes(self.start));
+        rv.extend(u14_to_bytes(self.end));
         rv.push(self.midi_bits.into());
         rv.push(self.cc_nrpn1_note);
         rv.push(self.nrpn2);

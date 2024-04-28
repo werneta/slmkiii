@@ -137,6 +137,15 @@ impl TryFrom<u8> for MidiCh {
  * Module function definitions
  *****************************************************************************/
 
+fn u14_to_bytes(val: u16) -> [u8; 2] {
+    return [
+        (0x7F & (val >> 8)).try_into().unwrap(),
+        (0x7F & (val >> 0)).try_into().unwrap(),
+    ];
+}
+
+/******************************************************************************/
+
 fn zpad(vec: &mut Vec<u8>, len: usize) {
     if len > vec.len() {
         vec.extend(zeros(len - vec.len()))
