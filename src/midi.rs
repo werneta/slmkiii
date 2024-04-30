@@ -178,6 +178,7 @@ impl fmt::Display for SysEx {
         let mut data = Vec::new();
 
         if self.pkt_type == PacketType::CONTINUE {
+            // TODO: Actually do the decoding
             for (n, &dval) in self.data.iter().enumerate() {
                 if (n % 8) != 0 {
                     data.push(dval);
