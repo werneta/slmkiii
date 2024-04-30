@@ -16,7 +16,7 @@ use std::iter::repeat;
  * API type definitions
  ******************************************************************************/
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum BehaviorType {
     Momentary,
     Toggle,
@@ -26,7 +26,7 @@ pub enum BehaviorType {
 
 /******************************************************************************/
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum CmdType {
     Cc,
     Nrpn,
@@ -39,7 +39,7 @@ pub enum CmdType {
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum MidiBits {
     SEVEN,
     EIGHT,
@@ -48,7 +48,7 @@ pub enum MidiBits {
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum MidiCh {
     DEFAULT,
     CHANNEL { ch: u8 },
