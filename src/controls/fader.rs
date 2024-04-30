@@ -4,7 +4,7 @@ use super::{u14_to_bytes, zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN}
  * API type definitions
  ******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Fader {
     name: String,
     enabled: bool,

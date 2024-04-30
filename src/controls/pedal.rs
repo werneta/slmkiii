@@ -1,7 +1,7 @@
 use super::{u14_to_bytes, zpad, CmdType, MidiBits, MidiCh, NAME_LEN, STRUCT_LEN};
 
 /*
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Footswitch {
     name: String,
     enabled: bool,
@@ -16,7 +16,7 @@ pub struct Footswitch {
  * API type definitions
  ******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Pedal {
     name: String,
     enabled: bool,

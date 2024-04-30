@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum RotaryType {
     ABSOLUTE,
     RELATIVE,
@@ -6,7 +6,7 @@ pub enum RotaryType {
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct RotaryBehavior {
     resolution: u16, // 30 - 3600
     ctype: RotaryType,

@@ -4,7 +4,7 @@ use super::{u14_to_bytes, zpad, BehaviorType, CmdType, MidiBits, MidiCh, NAME_LE
  * API type definitions
  ******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Button {
     name: String,
     enabled: bool,

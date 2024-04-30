@@ -1,6 +1,6 @@
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum ToggleType {
     OnPush,
     OnRelease,
@@ -8,7 +8,7 @@ pub enum ToggleType {
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum LimType {
     None,
     Limit,
