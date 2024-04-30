@@ -5,7 +5,6 @@ pub mod key;
 pub mod pad;
 pub mod pedal;
 pub mod rotary;
-pub mod slider;
 pub mod wheel;
 
 /******************************************************************************/
