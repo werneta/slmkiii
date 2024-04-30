@@ -13,21 +13,21 @@ const PACKETTYPE_END: u8 = 0x03;
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum DevId {
     SLMKIII,
 }
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum MfgrId {
     NOVATION,
 }
 
 /******************************************************************************/
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum PacketType {
     START,
     CONTINUE,
@@ -36,8 +36,8 @@ pub enum PacketType {
 
 /******************************************************************************/
 
-impl DevId {
-    fn bytes(&self) -> Vec<u8> {
+impl Into<Vec<u8>> for DevId {
+    fn into(self) -> Vec<u8> {
         return match self {
             DevId::SLMKIII => Vec::from(DEV_ID_SLMKIII),
         };
@@ -46,8 +46,8 @@ impl DevId {
 
 /******************************************************************************/
 
-impl MfgrId {
-    fn bytes(&self) -> Vec<u8> {
+impl Into<Vec<u8>> for MfgrId {
+    fn into(self) -> Vec<u8> {
         return match self {
             MfgrId::NOVATION => Vec::from(MFGR_ID_NOVATION),
         };
@@ -56,8 +56,8 @@ impl MfgrId {
 
 /******************************************************************************/
 
-impl PacketType {
-    fn bytes(&self) -> Vec<u8> {
+impl Into<Vec<u8>> for PacketType {
+    fn into(self) -> Vec<u8> {
         return match self {
             PacketType::START => vec![PACKETTYPE_START],
             PacketType::CONTINUE => vec![PACKETTYPE_CONTINUE],
@@ -99,7 +99,7 @@ fn get_packet_type(pkt_type: u8) -> PacketType {
 
 /******************************************************************************/
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct SysEx {
     mfgr: MfgrId,
     device: DevId,
@@ -155,14 +155,14 @@ pub fn split_sysex_msgs(bytes: &Vec<u8>) -> Vec<SysEx> {
 
 /******************************************************************************/
 
-impl SysEx {
-    pub fn bytes(&self) -> Vec<u8> {
-        let mut rv: Vec<u8> = vec![];
+impl Into<Vec<u8>> for SysEx {
+    fn into(self) -> Vec<u8> {
+        let mut rv: Vec<u8> = Default::default();
 
         rv.push(SYSTEM_EXCLUSIVE);
-        rv.extend(self.mfgr.bytes());
-        rv.extend(self.device.bytes());
-        rv.extend(self.pkt_type.bytes());
+        rv.extend::<Vec<u8>>(self.mfgr.into());
+        rv.extend::<Vec<u8>>(self.device.into());
+        rv.extend::<Vec<u8>>(self.pkt_type.into());
         // TODO: pkt ID, magic
         rv.extend(&self.data);
         rv.push(EOX);
@@ -201,13 +201,13 @@ impl fmt::Display for SysEx {
             })
         }
 
-        writeln!(f, "Mfgr:  {:?}", self.mfgr);
-        writeln!(f, "Dev:   {:?}", self.device);
-        writeln!(f, "Type:  {:?}", self.pkt_type);
-        writeln!(f, "Pkt:   {:?}", self.pkt_id);
-        writeln!(f, "Magic: {:?}", self.magic);
-        writeln!(f, "Data:  {}", hex);
-        writeln!(f, "Data:  {}", ascii);
+        writeln!(f, "Mfgr:  {:?}", self.mfgr)?;
+        writeln!(f, "Dev:   {:?}", self.device)?;
+        writeln!(f, "Type:  {:?}", self.pkt_type)?;
+        writeln!(f, "Pkt:   {:?}", self.pkt_id)?;
+        writeln!(f, "Magic: {:?}", self.magic)?;
+        writeln!(f, "Data:  {}", hex)?;
+        writeln!(f, "Data:  {}", ascii)?;
 
         return Ok(());
     }
