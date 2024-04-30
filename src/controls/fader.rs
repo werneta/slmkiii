@@ -53,7 +53,7 @@ impl Into<Vec<u8>> for Fader {
 impl TryFrom<Vec<u8>> for Fader {
     type Error = &'static str;
 
-    fn try_from(value: Vec<u8>) -> Result<Self, Self::Error> {
+    fn try_from(_value: Vec<u8>) -> Result<Self, Self::Error> {
         return Err("Not implemented");
     }
 }
